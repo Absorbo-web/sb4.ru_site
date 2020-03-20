@@ -1,0 +1,50 @@
+.preloader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    z-index: 2;
+    transition: 1s all;
+    opacity: 1;
+    visibility: visible;
+} 
+
+.loader {
+    width: 75px;
+    height: 75px;
+    border: 10px solid #fce38a;
+    border-radius: 50%;
+    border-top-color: #f38181;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    animation: 1s spin infinite linear;
+}
+
+.done {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.main__conteiner {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.doneMain {
+    transition: 1s all;
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes spin {
+    from {
+        transform: translate(-50%,-50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%,-50%) rotate(360deg);
+    }
+}
