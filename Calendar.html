@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendar</title>
-    <link rel="shortcut icon" href="assets//images/iconS.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/images/iconS.ico" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/Calendar.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/checkboxcss.css" />
 </head>
 <body>
   <style>
@@ -49,13 +50,16 @@
       width: 100%;
       height: 100vh;
     }
+
     .container {
       display: flex;
-      overflow-x:hidden; 
+      overflow-x:hidden;
       width: 100%;
       height: 100vh;
-      background-color: black;
+      background-color: #010e15;
       justify-content: center;
+      align-items: center;
+      border-bottom: #73001a 3px solid;
     }
 
     .container p {
@@ -63,7 +67,22 @@
       font-size: 10vh;
       color: #fff;
     }
+
+    .Cart {
+      display: flex;
+      padding: 20px;
+      width: 100%;
+      height: 300px;
+      justify-content: space-between;
+    }
+
+    .Cart__items {
+      height: 100%;
+      width: 10%;
+      background-color: #17262a;
+    }
     </style>
+
     
     
     <div class = "CalendarDiv">
@@ -78,56 +97,380 @@
       <tbody></tbody>
     </table>
     </div>
+    <script>
+      function calendar(id, year, month) {
+      var Dlast = new Date(year,month+1,0).getDate(),
+          D = new Date(year,month,Dlast),
+          DNlast = new Date(D.getFullYear(),D.getMonth(),Dlast).getDay(),
+          DNfirst = new Date(D.getFullYear(),D.getMonth(),1).getDay(),
+          calendar = '<tr>',
+          month=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+      if (DNfirst != 0) {
+        for(var  i = 1; i < DNfirst; i++) calendar += '<td>';
+      }else{
+        for(var  i = 0; i < 6; i++) calendar += '<td>';
+      }
+      for(var  i = 1; i <= Dlast; i++) {
+        if (i == new Date().getDate() && D.getFullYear() == new Date().getFullYear() && D.getMonth() == new Date().getMonth()) {
+          calendar += '<td class="today">' + i;
+        }else{
+          calendar += '<td>' + i;
+        }
+        if (new Date(D.getFullYear(),D.getMonth(),i).getDay() == 0) {
+          calendar += '<tr>';
+        }
+      }
+      for(var  i = DNlast; i < 7; i++) calendar += '<td> ';
+      document.querySelector('#'+id+' tbody').innerHTML = calendar;
+      document.querySelector('#'+id+' thead td:nth-child(2)').innerHTML = month[D.getMonth()] +' '+ D.getFullYear();
+      document.querySelector('#'+id+' thead td:nth-child(2)').dataset.month = D.getMonth();
+      document.querySelector('#'+id+' thead td:nth-child(2)').dataset.year = D.getFullYear();
+      if (document.querySelectorAll('#'+id+' tbody tr').length < 6) {  // чтобы при перелистывании месяцев не "подпрыгивала" вся страница, добавляется ряд пустых клеток. Итог: всегда 6 строк для цифр
+          document.querySelector('#'+id+' tbody').innerHTML += '<tr><td> <td> <td> <td> <td> <td> <td> ';
+      }
+      }
+      calendar("calendar", new Date().getFullYear(), new Date().getMonth());
+      // переключатель минус месяц
+      document.querySelector('#calendar thead tr:nth-child(1) td:nth-child(1)').onclick = function() {
+        calendar("calendar", document.querySelector('#calendar thead td:nth-child(2)').dataset.year, parseFloat(document.querySelector('#calendar thead td:nth-child(2)').dataset.month)-1);
+      }
+      // переключатель плюс месяц
+      document.querySelector('#calendar thead tr:nth-child(1) td:nth-child(3)').onclick = function() {
+        calendar("calendar", document.querySelector('#calendar thead td:nth-child(2)').dataset.year, parseFloat(document.querySelector('#calendar thead td:nth-child(2)').dataset.month)+1);
+      }
+      </script>   
     </div>
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <div class="container">
-      <p>Задание 2</p>
-      <p>...</p>
+      <div class="Cart">
+        <div class="Cart__items"></div>
+        <div class="Cart__items"></div>
+        <div class="Cart__items"></div>
+        <div class="Cart__items"></div>
+        <div class="Cart__items"></div>
+        <div class="Cart__items"></div>
+        <div class="Cart__items"></div>
+      </div>
+      <script>
+        function randomColor() {
+        var Mass = document.querySelectorAll(".Cart .Cart__items");
+        let rand = Math.random() * (Mass.length);
+        var i = Math.floor(rand);
+        var step;
+        for (step = 0; step < Mass.length; step++) {
+          Mass[step].style.backgroundColor = "#17262a";
+        }
+        Mass[i].style.backgroundColor = "#73001a";
+      }
+      setInterval(randomColor, 1000);
+      </script>
     </div>
     
-    <script>
-    function calendar(id, year, month) {
-    var Dlast = new Date(year,month+1,0).getDate(),
-        D = new Date(year,month,Dlast),
-        DNlast = new Date(D.getFullYear(),D.getMonth(),Dlast).getDay(),
-        DNfirst = new Date(D.getFullYear(),D.getMonth(),1).getDay(),
-        calendar = '<tr>',
-        month=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
-    if (DNfirst != 0) {
-      for(var  i = 1; i < DNfirst; i++) calendar += '<td>';
-    }else{
-      for(var  i = 0; i < 6; i++) calendar += '<td>';
-    }
-    for(var  i = 1; i <= Dlast; i++) {
-      if (i == new Date().getDate() && D.getFullYear() == new Date().getFullYear() && D.getMonth() == new Date().getMonth()) {
-        calendar += '<td class="today">' + i;
-      }else{
-        calendar += '<td>' + i;
-      }
-      if (new Date(D.getFullYear(),D.getMonth(),i).getDay() == 0) {
-        calendar += '<tr>';
-      }
-    }
-    for(var  i = DNlast; i < 7; i++) calendar += '<td> ';
-    document.querySelector('#'+id+' tbody').innerHTML = calendar;
-    document.querySelector('#'+id+' thead td:nth-child(2)').innerHTML = month[D.getMonth()] +' '+ D.getFullYear();
-    document.querySelector('#'+id+' thead td:nth-child(2)').dataset.month = D.getMonth();
-    document.querySelector('#'+id+' thead td:nth-child(2)').dataset.year = D.getFullYear();
-    if (document.querySelectorAll('#'+id+' tbody tr').length < 6) {  // чтобы при перелистывании месяцев не "подпрыгивала" вся страница, добавляется ряд пустых клеток. Итог: всегда 6 строк для цифр
-        document.querySelector('#'+id+' tbody').innerHTML += '<tr><td> <td> <td> <td> <td> <td> <td> ';
-    }
-    }
-    calendar("calendar", new Date().getFullYear(), new Date().getMonth());
-    // переключатель минус месяц
-    document.querySelector('#calendar thead tr:nth-child(1) td:nth-child(1)').onclick = function() {
-      calendar("calendar", document.querySelector('#calendar thead td:nth-child(2)').dataset.year, parseFloat(document.querySelector('#calendar thead td:nth-child(2)').dataset.month)-1);
-    }
-    // переключатель плюс месяц
-    document.querySelector('#calendar thead tr:nth-child(1) td:nth-child(3)').onclick = function() {
-      calendar("calendar", document.querySelector('#calendar thead td:nth-child(2)').dataset.year, parseFloat(document.querySelector('#calendar thead td:nth-child(2)').dataset.month)+1);
-    }
-    </script>    
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    
+    <div class="container">
+      <style>
+        #myLink {
+          color: #fff;
+        }
+      </style>
+      <div id="myLink">тут будет ссылка </div>
+      <script type="text/javascript">
+        var div = document.getElementById('myLink');
+        var e    = document.createElement('a');
+        e.href = 'http://google.ru';
+        e.target = "_blank"
+        e.title = 'это ссылка';
+        e.backgroundColor = "#010e15"
+        e.appendChild(document.createTextNode('ссылка'));
+        div.appendChild(e);
+      </script>
+    </div>
+    
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <div class="container">
+      <style>
+        #img__box {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 60%;
+          background-color: #0a191d;
+        }
+
+        .div__img {
+          width: 24%;
+          margin: 4px;
+          height: 90%;
+          background-color: #17262a;
+        }
+      </style>
+      <div id="img__box">
+        <div class="div__img"></div>
+        <div class="div__img"></div>
+        <div class="div__img"></div>
+        <div class="div__img"></div>
+      </div>
+      <script>
+        img__box.onmouseover = img__box.onmouseout = handler;
+        function handler(event) {
+          var Mass = document.querySelectorAll("#img__box .div__img");
+          let rand = Math.random() * (Mass.length);
+          var i = Math.floor(rand);
+          if (event.type == 'mouseover') {
+            var step;
+            for (step = 0; step < Mass.length; step++) {
+              Mass[step].style.backgroundColor = "#17262a";
+            }
+          }
+          if (event.type == 'mouseout') {
+            Mass[i].style.backgroundColor = "#73001a";
+          }
+        }
+      </script>
+    </div>
+    
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <div class="container">
+      <style>
+        .wrapper{
+            width: 150px;
+            /* background-color: #010e15; */
+            background-color:rgba(0, 0, 0, 0);
+            position: relative;
+            color: white;
+            text-align: left;
+            height: 40px;
+            font-family: 'Arial';
+        }
+
+        #check-menu{
+            display: none;
+        }
+
+        .wrapper label{
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+            line-height: 40px;
+        }
+
+        .burger-line{
+            position: absolute;
+            top: 8px;
+            left: 20px;
+            width: 35px;
+            height: 2px;
+            background-color: #fff;
+            transition: .5s all;
+        }
+
+        .second, .third{
+            top: 18px;
+        }
+
+        .fourth{
+            top: 28px;
+        }
+
+        .main-menu{
+            display: block;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            transform: translateY(100%);
+            max-height: 0;
+            font-size: 0;
+            overflow: hidden;
+            transition: .5s all;
+        }
+
+        a{
+            display: block;
+            width: 100%;
+            padding: 10px 23px;
+            padding-right: 0;
+            color: white;
+            text-decoration: none;
+            /* border-top: 1px solid rgba(255,255,255,.3); */
+            /* background-color: #010e15; */
+            background-color:rgba(0, 0, 0, 0);
+        }
+
+        a:hover{
+            background-color:rgba(0, 0, 0, 0);
+        }
+
+        #check-menu:checked ~ .main-menu{
+            max-height: 500px;
+            font-size: 16px;
+        }
+
+        #check-menu:checked ~ .first{
+            display: none;
+        }
+
+        #check-menu:checked ~ .second{
+            transform: rotate(45deg);
+        }
+
+        #check-menu:checked ~ .third{
+            transform: rotate(-45deg);
+        }
+
+        #check-menu:checked ~ .fourth{
+            display: none;
+        }
+
+        #check-menu:checked ~ .border__glass{
+          opacity: 1;
+        }
+        
+        .border__glass {
+          position: absolute;
+          top: -18px;
+          left: 0;
+          width: 105px;
+          height: 265px;
+          border-bottom-right-radius: 20px;
+          background-color: rgba(173, 173, 173, 0.301);
+          opacity: 0;
+          transition: .5s all;
+        }
+
+        .conteiner__introMenu {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 30px;
+          width: 100%;
+          height: 100%;
+          position: relative;
+          background-image: url(assets/images/background.jpg);
+          background-repeat: no-repeat;
+          background-size: 100%;
+        }
+
+        .conteiner__menu {
+          display: flex;
+          position: absolute;
+          padding-top: 18px;
+          height: 260px;
+          width: 100px;
+          top: 0;
+          left: 0;
+          align-items: flex-start;
+          justify-content: flex-start;
+        }
+
+        .anketa__conteiner{
+          display: flex;
+          padding: 20px;
+          width: 30%;
+          height: 100%;
+          border-radius: 20px;
+          background-color: rgba(173, 173, 173, 0.35);
+          transform: translate(30%,0);
+        }
+
+        .anketa__conteiner p{
+          margin: 10px 12px;
+          font-size: 1em;
+        }
+
+        .anketa__conteiner input, textarea{
+          margin: 3px 0;
+          border: none;
+          color: #fff;
+        }
+
+        .anketa__conteiner input[type = "text"], [type = "password"], textarea{
+          width: 100%;
+          background-color: rgba(226, 226, 226, 0.301);
+        }
+
+        .anketa__conteiner input[type = "checkbox"]{
+          background-color: rgba(0, 0, 0, 0.945);
+          border-radius: 50%;
+        }
+      </style>
+      <div class="conteiner__introMenu">
+        <div class="conteiner__menu">
+          <div class="wrapper">
+            <input type="checkbox" id="check-menu">
+            <label for="check-menu"></label>
+            <div class="burger-line first"></div>
+            <div class="burger-line second"></div>
+            <div class="burger-line third"></div>
+            <div class="burger-line fourth"></div>
+            <nav class="main-menu">
+                <a href="#">Пункт 1</a>
+                <a href="#">Пункт 2</a>
+                <a href="#">Пункт 3</a>
+                <a href="#">Пункт 4</a>
+                <a href="#">Пункт 5</a>
+            </nav>
+            <div class="border__glass"></div>
+        </div>
+        </div><!-- conteiner__menu -->
+        <div class="anketa__conteiner">
+
+
+          <form name="test" method="post" action="input1.php">
+            <p><b>Ваше имя:</b><br>
+             <input type="text" size="40">
+            </p>
+            <p><b>E-mail:</b><br>
+              <input type="text" size="40">
+             </p>
+            <p><b>Пароль:</b><br>
+              <input type="password" size="40">
+              <input type="password" size="40">
+            </p>
+            <p><b>Пол:</b>
+              <input type="radio" name="Gender" value="male"> Мужчина   
+              <input type="radio" name="Gender" value="female"> Женщина
+             </p>
+            <p><b>Ваши навыки:</b><Br>
+              <input type="checkbox" id="checkbox-1-1" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-1"></label> Знания html и css<Br>
+              <input type="checkbox" id="checkbox-1-2" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-2"></label> Знания Perl<Br>
+              <input type="checkbox" id="checkbox-1-3" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-3"></label> Знания ASP<Br>
+              <input type="checkbox" id="checkbox-1-4" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-4"></label> Знания Adobe Photoshop<Br>
+              <input type="checkbox" id="checkbox-1-5" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-5"></label> Знания JAVA<Br>
+              <input type="checkbox" id="checkbox-1-6" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-6"></label> Знания JavaScript<Br>
+              <input type="checkbox" id="checkbox-1-7" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-7"></label> Знания Flash<Br>
+            </p>
+            <p><b>Дополнительные сведения о себе:</b><Br>
+             <textarea name="comment" cols="40" rows="3"></textarea></p>
+            <p><input type="submit" value="Отправить">
+             <input type="reset" value="Очистить"></p>
+           </form>
+
+
+        </div>
+      </div><!-- conteiner__introMenu -->
+    </div> 
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
 </body>
 </html>
