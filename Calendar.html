@@ -353,6 +353,7 @@
           background-color: rgba(173, 173, 173, 0.301);
           opacity: 0;
           transition: .5s all;
+          z-index: 0;
         }
 
         .conteiner__introMenu {
@@ -365,7 +366,7 @@
           position: relative;
           background-image: url(assets/images/background.jpg);
           background-repeat: no-repeat;
-          background-size: 100%;
+          background-size: 55%;
         }
 
         .conteiner__menu {
@@ -382,16 +383,20 @@
 
         .anketa__conteiner{
           display: flex;
+          visibility: hidden;
           padding: 20px;
-          width: 30%;
+          width: 40%;
+          min-width: 300px;
           height: 100%;
           border-radius: 20px;
           background-color: rgba(173, 173, 173, 0.35);
-          transform: translate(30%,0);
+          transform: translate(50%,0);
+          transition: all .2s linear;
+          opacity: 0;
         }
 
         .anketa__conteiner p{
-          margin: 10px 12px;
+          margin: 8px 12px;
           font-size: 1em;
         }
 
@@ -406,9 +411,47 @@
           background-color: rgba(226, 226, 226, 0.301);
         }
 
+        .anketa__conteiner input[type = "submit"], [type = "reset"]{
+          width: 40%;
+          background-color: rgba(226, 226, 226, 0.301);
+          color: #fff;
+          font-size: 15px;
+          height: 25px;
+          border-radius: 20px;
+        }
+
         .anketa__conteiner input[type = "checkbox"]{
           background-color: rgba(0, 0, 0, 0.945);
           border-radius: 50%;
+        }
+
+        .anketa__conteiner span {
+          height: 24px;
+          vertical-align: top;
+          margin-left: 10px;
+        }
+
+        #check-anketa{
+          display: none;
+        }
+
+        .anketa__div {
+          position: relative;
+          padding: 10px 23px;
+          width: 100%;
+          height: 100%;
+        }
+
+        .anketa__div label {
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+          z-index: 2;
+          line-height: 40px;
         }
       </style>
       <div class="conteiner__introMenu">
@@ -420,17 +463,21 @@
             <div class="burger-line second"></div>
             <div class="burger-line third"></div>
             <div class="burger-line fourth"></div>
+            <div class="border__glass"></div>
             <nav class="main-menu">
-                <a href="#">Пункт 1</a>
+                  <div class="anketa__div">
+                    Анкета 
+                    <input type="checkbox" id="check-anketa" onchange="fun1()">
+                    <label for="check-anketa"></label>
+                  </div>
                 <a href="#">Пункт 2</a>
                 <a href="#">Пункт 3</a>
                 <a href="#">Пункт 4</a>
                 <a href="#">Пункт 5</a>
             </nav>
-            <div class="border__glass"></div>
         </div>
         </div><!-- conteiner__menu -->
-        <div class="anketa__conteiner">
+        <div id="anketa__conteiner" class="anketa__conteiner">
 
 
           <form name="test" method="post" action="input1.php">
@@ -444,18 +491,20 @@
               <input type="password" size="40">
               <input type="password" size="40">
             </p>
-            <p><b>Пол:</b>
-              <input type="radio" name="Gender" value="male"> Мужчина   
-              <input type="radio" name="Gender" value="female"> Женщина
+            <p><span style="margin-left: 0;"><b>Пол:</b></span>
+              <input type="radio" id="radio-1-1" name="Gender" value="male" class="regular-radio" 
+              /><label for="radio-1-1"></label><span>Мужчина</span>
+              <input type="radio" id="radio-1-2" name="Gender" value="female" class="regular-radio" 
+              /><label for="radio-1-2"></label><span>Женщина</span>
              </p>
-            <p><b>Ваши навыки:</b><Br>
-              <input type="checkbox" id="checkbox-1-1" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-1"></label> Знания html и css<Br>
-              <input type="checkbox" id="checkbox-1-2" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-2"></label> Знания Perl<Br>
-              <input type="checkbox" id="checkbox-1-3" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-3"></label> Знания ASP<Br>
-              <input type="checkbox" id="checkbox-1-4" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-4"></label> Знания Adobe Photoshop<Br>
-              <input type="checkbox" id="checkbox-1-5" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-5"></label> Знания JAVA<Br>
-              <input type="checkbox" id="checkbox-1-6" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-6"></label> Знания JavaScript<Br>
-              <input type="checkbox" id="checkbox-1-7" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-7"></label> Знания Flash<Br>
+            <p><b>Ваши навыки:</b><Br><span style="display:block; height: 5px"></span>
+              <input type="checkbox" id="checkbox-1-1" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-1"></label><span>Знания html и css</span><Br>
+              <input type="checkbox" id="checkbox-1-2" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-2"></label><span>Знания Perl</span><Br>
+              <input type="checkbox" id="checkbox-1-3" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-3"></label><span>Знания ASP</span><Br>
+              <input type="checkbox" id="checkbox-1-4" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-4"></label><span>Знания Adobe Photoshop</span><Br>
+              <input type="checkbox" id="checkbox-1-5" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-5"></label><span>Знания JAVA</span><Br>
+              <input type="checkbox" id="checkbox-1-6" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-6"></label><span>Знания JavaScript</span><Br>
+              <input type="checkbox" id="checkbox-1-7" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-7"></label><span>Знания Flash</span><Br>
             </p>
             <p><b>Дополнительные сведения о себе:</b><Br>
              <textarea name="comment" cols="40" rows="3"></textarea></p>
@@ -471,6 +520,23 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
+    <script>
+      function fun1() {
+        var chbox;
+        chbox=document.getElementById('check-menu');
+        var anketa;
+        anketa=document.getElementById('anketa__conteiner');
+        console.log(anketa.style.visibility);
+          if (anketa.style.visibility=="hidden") {
+            anketa.style.visibility="visible";
+            anketa.style.opacity="1";
+          }
+          else {
+            anketa.style.visibility="hidden";
+            anketa.style.opacity="0";
+          }
+      };
+      fun1();
+    </script>
 </body>
 </html>
