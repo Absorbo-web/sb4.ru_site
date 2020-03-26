@@ -7,8 +7,11 @@
     <link rel="shortcut icon" href="assets/images/iconS.ico" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/Calendar.css">
     <link rel="stylesheet" type="text/css" href="assets/css/checkboxcss.css" />
+    <!--Подключаем jQuery-->
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
 <body>
+
   <style>
 
     * {
@@ -23,32 +26,34 @@
       line-height: 2.5em;
       font-size: 4.5vh;
       text-align: center;
+      color: rgb(190, 190, 190);
     }
     #calendar thead tr:last-child {
       font-size: 4vh;
-      color: rgb(85, 85, 85);
+      color: rgb(180, 155, 209);
     }
     #calendar thead tr:nth-child(1) td:nth-child(2) {
-      color: rgb(50, 50, 50);
+      color: rgb(190, 190, 190);
     }
     #calendar thead tr:nth-child(1) td:nth-child(1):hover, #calendar thead tr:nth-child(1) td:nth-child(3):hover {
       cursor: pointer;
     }
     #calendar tbody td {
-      color: rgb(44, 86, 122);
+      color: rgb(255, 255, 255);
       font-size: 4.5vh;
     }
     #calendar tbody td:nth-child(n+6), #calendar .holiday {
-      color: rgb(231, 140, 92);
+      color: rgb(255, 87, 9);
     }
     #calendar tbody td.today {
-      background: rgb(220, 0, 0);
-      color: #fff;
+      background: rgb(190, 190, 190);
+      color: rgb(211, 23, 23);
     }
     .CalendarDiv {
       align-items: center;
       width: 100%;
       height: 100vh;
+      background-color: #010e15;
     }
 
     .container {
@@ -59,7 +64,7 @@
       background-color: #010e15;
       justify-content: center;
       align-items: center;
-      border-bottom: #73001a 3px solid;
+      /* border-bottom: #73001a 3px solid; */
     }
 
     .container p {
@@ -81,12 +86,359 @@
       width: 10%;
       background-color: #17262a;
     }
+
+    #clock {  
+      font-family: sans-serif;  
+      color: rgb(190, 190, 190);  
+      text-align: center;  
+      position: absolute;  
+      left: 50%;  
+      top: 50%;  
+      -webkit-transform: translate(-50%, -50%);  
+      transform: translate(-50%, -50%);  
+      /* color: #daf6ff;   */
+      /* text-shadow: 0 0 20px #0aafe6, 0 0 20px rgba(10, 175, 230, 0);   */
+    }  
+      
+    #clock .time {  
+      letter-spacing: 0.05em;  
+      font-size: 4em;  
+      padding: 5px 0;  
+    }  
+      
+    #clock .date {  
+      letter-spacing: 0.1em;  
+      font-size: 24px;  
+    }  
+      
+    #clock .text {  
+      letter-spacing: 0.1em;  
+      font-size: 12px;  
+      padding: 20px 0 0;  
+    }
+    .clock__div {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 120px;
+    }
     </style>
 
+  <div class="container">
+    <style>
+      .wrapper{
+          width: 150px;
+          /* background-color: #010e15; */
+          background-color:rgba(0, 0, 0, 0);
+          position: relative;
+          color: white;
+          text-align: left;
+          height: 40px;
+          font-family: 'Arial';
+      }
+
+      #check-menu{
+          display: none;
+      }
+
+      .wrapper label{
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+          z-index: 2;
+          line-height: 40px;
+      }
+
+      .burger-line{
+          position: absolute;
+          top: 8px;
+          left: 20px;
+          width: 35px;
+          height: 2px;
+          background-color: #fff;
+          transition: .5s all;
+      }
+
+      .second, .third{
+          top: 18px;
+      }
+
+      .fourth{
+          top: 28px;
+      }
+
+      .main-menu{
+          display: block;
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+          left: 0;
+          transform: translateY(100%);
+          max-height: 0;
+          font-size: 0;
+          overflow: hidden;
+          transition: .5s all;
+      }
+
+      a{
+          display: block;
+          width: 100%;
+          padding: 10px 23px;
+          padding-right: 0;
+          color: white;
+          text-decoration: none;
+          /* border-top: 1px solid rgba(255,255,255,.3); */
+          /* background-color: #010e15; */
+          background-color:rgba(0, 0, 0, 0);
+      }
+
+      a:hover{
+          background-color:rgba(0, 0, 0, 0);
+      }
+
+      #check-menu:checked ~ .main-menu{
+          max-height: 500px;
+          font-size: 16px;
+      }
+
+      #check-menu:checked ~ .first{
+          display: none;
+      }
+
+      #check-menu:checked ~ .second{
+          transform: rotate(45deg);
+      }
+
+      #check-menu:checked ~ .third{
+          transform: rotate(-45deg);
+      }
+
+      #check-menu:checked ~ .fourth{
+          display: none;
+      }
+
+      #check-menu:checked ~ .border__glass{
+        opacity: 1;
+      }
+      
+      .border__glass {
+        position: absolute;
+        top: -18px;
+        left: 0;
+        width: 105px;
+        height: 265px;
+        border-bottom-right-radius: 20px;
+        background-color: rgba(173, 173, 173, 0.301);
+        opacity: 0;
+        transition: .5s all;
+        z-index: 0;
+      }
+
+      .conteiner__introMenu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        background-image: url(assets/images/backgroundNoLigth.jpg);
+        background-repeat: no-repeat;
+        background-size: 107vh;
+      }
+
+      .conteiner__menu {
+        display: flex;
+        position: absolute;
+        padding-top: 18px;
+        height: 260px;
+        width: 100px;
+        top: 0;
+        left: 0;
+        align-items: flex-start;
+        justify-content: flex-start;
+      }
+
+      .anketa__conteiner{
+        display: flex;
+        visibility: hidden;
+        padding: 20px;
+        width: 40%;
+        min-width: 300px;
+        /* height: 100%; */
+        border-radius: 20px;
+        background-color: rgba(173, 173, 173, 0.35);
+        transform: translate(50%,0);
+        transition: all .2s linear;
+        opacity: 0;
+      }
+
+      .anketa__conteiner p{
+        margin: 8px 12px;
+        font-size: 1em;
+      }
+
+      .anketa__conteiner input, textarea{
+        margin: 3px 0;
+        border: none;
+        color: #fff;
+      }
+
+      .anketa__conteiner input[type = "text"], [type = "password"], textarea{
+        width: 100%;
+        background-color: rgba(226, 226, 226, 0.301);
+      }
+
+      .anketa__conteiner input[type = "submit"], [type = "reset"]{
+        width: 40%;
+        background-color: rgba(226, 226, 226, 0.301);
+        color: #fff;
+        font-size: 15px;
+        height: 25px;
+        border-radius: 20px;
+      }
+
+      .anketa__conteiner input[type = "checkbox"]{
+        background-color: rgba(0, 0, 0, 0.945);
+        border-radius: 50%;
+      }
+
+      .anketa__conteiner span {
+        height: 24px;
+        vertical-align: top;
+        margin-left: 10px;
+      }
+
+      #check-anketa{
+        display: none;
+      }
+
+      .anketa__div {
+        position: relative;
+        padding: 10px 23px;
+        width: 100%;
+        height: 100%;
+      }
+
+      .anketa__div label {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 2;
+        line-height: 40px;
+      }
+
+      .anketa__conteiner form {
+        width: 100%;
+      }
+
+      .head__title {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%,0);
+        background-color: rgba(173, 173, 173, 0.35);
+        color: #fff;
+        font-size: 2em;
+        padding: 20px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 1200px;
+        width: 80%;
+      }
+    .subtitle {
+      margin-top: 10px;
+      font-size: 0.8em;
+    }
+    </style>
+    <div class="conteiner__introMenu">
+      <div class="head__title">
+        <div class="title">Добро пожаловать на страницу</div>
+        <div class="subtitle">Здесь будут располагаться решения разных заданий по Web-программированию с курса "Программирование в комьютерных сетях</div>
+      </div>
+      <div class="conteiner__menu">
+        <div class="wrapper">
+          <input type="checkbox" id="check-menu">
+          <label for="check-menu"></label>
+          <div class="burger-line first"></div>
+          <div class="burger-line second"></div>
+          <div class="burger-line third"></div>
+          <div class="burger-line fourth"></div>
+          <div class="border__glass"></div>
+          <nav class="main-menu">
+                <div class="anketa__div">
+                  Анкета 
+                  <input type="checkbox" id="check-anketa" onchange="fun1()">
+                  <label for="check-anketa"></label>
+                </div>
+              <a href="#z1">Календарь</a>
+              <a href="#clock">Пункт 3</a>
+              <a href="#">Пункт 4</a>
+              <a href="#">Пункт 5</a>
+          </nav>
+      </div>
+      </div><!-- conteiner__menu -->
+      <div id="anketa__conteiner" class="anketa__conteiner">
+
+
+        <form name="test" method="post" action="input1.php">
+          <p><b>Ваше имя:</b><br>
+           <input type="text" size="40">
+          </p>
+          <p><b>E-mail:</b><br>
+            <input type="text" size="40">
+           </p>
+          <p><b>Пароль:</b><br>
+            <input type="password" size="40">
+            <input type="password" size="40">
+          </p>
+          <p><span style="margin-left: 0;"><b>Пол:</b></span>
+            <input type="radio" id="radio-1-1" name="Gender" value="male" class="regular-radio" 
+            /><label for="radio-1-1"></label><span>Мужчина</span>
+            <input type="radio" id="radio-1-2" name="Gender" value="female" class="regular-radio" 
+            /><label for="radio-1-2"></label><span>Женщина</span>
+           </p>
+          <p><b>Ваши навыки:</b><Br><span style="display:block; height: 5px"></span>
+            <input type="checkbox" id="checkbox-1-1" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-1"></label><span>Знания html и css</span><Br>
+            <input type="checkbox" id="checkbox-1-2" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-2"></label><span>Знания Perl</span><Br>
+            <input type="checkbox" id="checkbox-1-3" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-3"></label><span>Знания ASP</span><Br>
+            <input type="checkbox" id="checkbox-1-4" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-4"></label><span>Знания Adobe Photoshop</span><Br>
+            <input type="checkbox" id="checkbox-1-5" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-5"></label><span>Знания JAVA</span><Br>
+            <input type="checkbox" id="checkbox-1-6" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-6"></label><span>Знания JavaScript</span><Br>
+            <input type="checkbox" id="checkbox-1-7" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-7"></label><span>Знания Flash</span><Br>
+          </p>
+          <p><b>Дополнительные сведения о себе:</b><Br>
+           <textarea name="comment" cols="40" rows="3"></textarea></p>
+          <p><input type="submit" value="Отправить">
+           <input type="reset" value="Очистить"></p>
+         </form>
+
+
+      </div>
+    </div><!-- conteiner__introMenu -->
+  </div> 
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     
-    
-    <div class = "CalendarDiv">
-    <div style="width:100%; height: 100%; border:1px solid #c0c0c0; padding:6px;">
+    <div class = "CalendarDiv" id="z1">
+      <div class="clock__div">
+        <div id="clock">  
+          <p class="date">{{ date }}</p>  
+          <p class="time">{{ time }}</p>  
+        </div>
+      </div>
+    <div style="width:100%; height: 100%; padding:6px;">
     <table id="calendar"  border="0" cellspacing="0" cellpadding="1">
       <thead>
         <tr>
@@ -239,287 +591,11 @@
         }
       </script>
     </div>
-    
-    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-    <div class="container">
-      <style>
-        .wrapper{
-            width: 150px;
-            /* background-color: #010e15; */
-            background-color:rgba(0, 0, 0, 0);
-            position: relative;
-            color: white;
-            text-align: left;
-            height: 40px;
-            font-family: 'Arial';
-        }
-
-        #check-menu{
-            display: none;
-        }
-
-        .wrapper label{
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-            z-index: 2;
-            line-height: 40px;
-        }
-
-        .burger-line{
-            position: absolute;
-            top: 8px;
-            left: 20px;
-            width: 35px;
-            height: 2px;
-            background-color: #fff;
-            transition: .5s all;
-        }
-
-        .second, .third{
-            top: 18px;
-        }
-
-        .fourth{
-            top: 28px;
-        }
-
-        .main-menu{
-            display: block;
-            position: absolute;
-            width: 100%;
-            bottom: 0;
-            left: 0;
-            transform: translateY(100%);
-            max-height: 0;
-            font-size: 0;
-            overflow: hidden;
-            transition: .5s all;
-        }
-
-        a{
-            display: block;
-            width: 100%;
-            padding: 10px 23px;
-            padding-right: 0;
-            color: white;
-            text-decoration: none;
-            /* border-top: 1px solid rgba(255,255,255,.3); */
-            /* background-color: #010e15; */
-            background-color:rgba(0, 0, 0, 0);
-        }
-
-        a:hover{
-            background-color:rgba(0, 0, 0, 0);
-        }
-
-        #check-menu:checked ~ .main-menu{
-            max-height: 500px;
-            font-size: 16px;
-        }
-
-        #check-menu:checked ~ .first{
-            display: none;
-        }
-
-        #check-menu:checked ~ .second{
-            transform: rotate(45deg);
-        }
-
-        #check-menu:checked ~ .third{
-            transform: rotate(-45deg);
-        }
-
-        #check-menu:checked ~ .fourth{
-            display: none;
-        }
-
-        #check-menu:checked ~ .border__glass{
-          opacity: 1;
-        }
-        
-        .border__glass {
-          position: absolute;
-          top: -18px;
-          left: 0;
-          width: 105px;
-          height: 265px;
-          border-bottom-right-radius: 20px;
-          background-color: rgba(173, 173, 173, 0.301);
-          opacity: 0;
-          transition: .5s all;
-          z-index: 0;
-        }
-
-        .conteiner__introMenu {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 30px;
-          width: 100%;
-          height: 100%;
-          position: relative;
-          background-image: url(assets/images/background.jpg);
-          background-repeat: no-repeat;
-          background-size: 55%;
-        }
-
-        .conteiner__menu {
-          display: flex;
-          position: absolute;
-          padding-top: 18px;
-          height: 260px;
-          width: 100px;
-          top: 0;
-          left: 0;
-          align-items: flex-start;
-          justify-content: flex-start;
-        }
-
-        .anketa__conteiner{
-          display: flex;
-          visibility: hidden;
-          padding: 20px;
-          width: 40%;
-          min-width: 300px;
-          height: 100%;
-          border-radius: 20px;
-          background-color: rgba(173, 173, 173, 0.35);
-          transform: translate(50%,0);
-          transition: all .2s linear;
-          opacity: 0;
-        }
-
-        .anketa__conteiner p{
-          margin: 8px 12px;
-          font-size: 1em;
-        }
-
-        .anketa__conteiner input, textarea{
-          margin: 3px 0;
-          border: none;
-          color: #fff;
-        }
-
-        .anketa__conteiner input[type = "text"], [type = "password"], textarea{
-          width: 100%;
-          background-color: rgba(226, 226, 226, 0.301);
-        }
-
-        .anketa__conteiner input[type = "submit"], [type = "reset"]{
-          width: 40%;
-          background-color: rgba(226, 226, 226, 0.301);
-          color: #fff;
-          font-size: 15px;
-          height: 25px;
-          border-radius: 20px;
-        }
-
-        .anketa__conteiner input[type = "checkbox"]{
-          background-color: rgba(0, 0, 0, 0.945);
-          border-radius: 50%;
-        }
-
-        .anketa__conteiner span {
-          height: 24px;
-          vertical-align: top;
-          margin-left: 10px;
-        }
-
-        #check-anketa{
-          display: none;
-        }
-
-        .anketa__div {
-          position: relative;
-          padding: 10px 23px;
-          width: 100%;
-          height: 100%;
-        }
-
-        .anketa__div label {
-          display: block;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          cursor: pointer;
-          z-index: 2;
-          line-height: 40px;
-        }
-      </style>
-      <div class="conteiner__introMenu">
-        <div class="conteiner__menu">
-          <div class="wrapper">
-            <input type="checkbox" id="check-menu">
-            <label for="check-menu"></label>
-            <div class="burger-line first"></div>
-            <div class="burger-line second"></div>
-            <div class="burger-line third"></div>
-            <div class="burger-line fourth"></div>
-            <div class="border__glass"></div>
-            <nav class="main-menu">
-                  <div class="anketa__div">
-                    Анкета 
-                    <input type="checkbox" id="check-anketa" onchange="fun1()">
-                    <label for="check-anketa"></label>
-                  </div>
-                <a href="#">Пункт 2</a>
-                <a href="#">Пункт 3</a>
-                <a href="#">Пункт 4</a>
-                <a href="#">Пункт 5</a>
-            </nav>
-        </div>
-        </div><!-- conteiner__menu -->
-        <div id="anketa__conteiner" class="anketa__conteiner">
-
-
-          <form name="test" method="post" action="input1.php">
-            <p><b>Ваше имя:</b><br>
-             <input type="text" size="40">
-            </p>
-            <p><b>E-mail:</b><br>
-              <input type="text" size="40">
-             </p>
-            <p><b>Пароль:</b><br>
-              <input type="password" size="40">
-              <input type="password" size="40">
-            </p>
-            <p><span style="margin-left: 0;"><b>Пол:</b></span>
-              <input type="radio" id="radio-1-1" name="Gender" value="male" class="regular-radio" 
-              /><label for="radio-1-1"></label><span>Мужчина</span>
-              <input type="radio" id="radio-1-2" name="Gender" value="female" class="regular-radio" 
-              /><label for="radio-1-2"></label><span>Женщина</span>
-             </p>
-            <p><b>Ваши навыки:</b><Br><span style="display:block; height: 5px"></span>
-              <input type="checkbox" id="checkbox-1-1" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-1"></label><span>Знания html и css</span><Br>
-              <input type="checkbox" id="checkbox-1-2" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-2"></label><span>Знания Perl</span><Br>
-              <input type="checkbox" id="checkbox-1-3" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-3"></label><span>Знания ASP</span><Br>
-              <input type="checkbox" id="checkbox-1-4" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-4"></label><span>Знания Adobe Photoshop</span><Br>
-              <input type="checkbox" id="checkbox-1-5" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-5"></label><span>Знания JAVA</span><Br>
-              <input type="checkbox" id="checkbox-1-6" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-6"></label><span>Знания JavaScript</span><Br>
-              <input type="checkbox" id="checkbox-1-7" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-7"></label><span>Знания Flash</span><Br>
-            </p>
-            <p><b>Дополнительные сведения о себе:</b><Br>
-             <textarea name="comment" cols="40" rows="3"></textarea></p>
-            <p><input type="submit" value="Отправить">
-             <input type="reset" value="Очистить"></p>
-           </form>
-
-
-        </div>
-      </div><!-- conteiner__introMenu -->
-    </div> 
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
     <script>
       function fun1() {
         var chbox;
@@ -538,5 +614,47 @@
       };
       fun1();
     </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js'></script>
+    <!-- Скрипт для часов -->
+    <script>  
+      var clock = new Vue({  
+      el: '#clock',  
+      data: {  
+      time: '',  
+      date: ''  
+      }  
+      });  
+    
+      var week = ['ВС', 'ПОН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СУБ'];  
+      var timerID = setInterval(updateTime, 1000);  
+      updateTime();  
+    
+      function updateTime() {  
+      var cd = new Date();  
+      clock.time = zeroPadding(cd.getHours(), 2) + ':' + zeroPadding(cd.getMinutes(), 2) + ':' + zeroPadding(cd.getSeconds(), 2);  
+      clock.date = zeroPadding(cd.getFullYear(), 4) + '-' + zeroPadding(cd.getDate(), 2) + '-' + zeroPadding(cd.getMonth() + 1, 2) + ' ' + week[cd.getDay()];  
+      };  
+    
+      function zeroPadding(num, digit) {  
+      var zero = '';  
+      for (var i = 0; i < digit; i++) {  
+      zero += '0';  
+      }  
+      return (zero + num).slice(-digit);  
+      }  
+    </script>
 </body>
 </html>
+<!-- Пишем скрипт для прокрутки -->
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+      jQuery('.nav a[href^="#"]').click( function(){
+          var scroll_el = jQuery(this).attr('href');
+          var destination = jQuery(scroll_el).offset().top;
+          if (jQuery(scroll_el).length != 0) {
+              jQuery('html, body').animate( { scrollTop: destination }, 1100 );
+          }
+          return false;
+      });
+  })
+</script>
