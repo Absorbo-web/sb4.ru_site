@@ -40,16 +40,16 @@
             </div><!-- conteiner__menu -->
             <div id="anketa__conteiner" class="anketa__conteiner">
     
-                <form name="test" method="post" action="input1.php">
+                <form name="test" method="get" action="#" > <!-- action="input1.php" -->
                     <p><b>Ваше имя:</b><br>
-                    <input type="text" size="40">
+                    <input type="text" id="somebodyname" size="40" required>
                     </p>
                     <p><b>E-mail:</b><br>
-                        <input type="text" size="40">
+                        <input type="email" id="somebodymail" size="40" required>
                     </p>
                     <p><b>Пароль:</b><br>
-                        <input type="password" size="40">
-                        <input type="password" size="40">
+                        <input id="password1" type="password" size="40">
+                        <input id="password2" type="password" size="40" onchange="validatePassword()">
                     </p>
                     <p><span style="margin-left: 0;"><b>Пол:</b></span>
                         <input type="radio" id="radio-1-1" name="Gender" value="male" class="regular-radio" 
@@ -67,11 +67,36 @@
                     <input type="checkbox" id="checkbox-1-7" class="regular-checkbox" name="browser" value="ie"><label for="checkbox-1-7"></label><span>Знания Flash</span><Br>
                     </p>
                     <p><b>Дополнительные сведения о себе:</b><Br>
-                    <textarea name="comment" cols="40" rows="3"></textarea></p>
-                    <p><input type="submit" value="Отправить">
-                    <input type="reset" value="Очистить"></p>
+                    <textarea name="comment" id="somebodyinfo" cols="40" rows="3"></textarea></p>
+                    <p><input type="submit" value="Отправить" onchange="validatePassword()">
+                    <input type="reset" value="Очистить" onchange="clearForm()"></p>
                 </form>
     
+                <script type="text/javascript">
+                    window.onload = function () {
+                        document.getElementById("password1").onchange = validatePassword;
+                        document.getElementById("password2").onchange = validatePassword;
+                    }
+                    function validatePassword(){
+                    var pass2=document.getElementById("password2").value;
+                    var pass1=document.getElementById("password1").value;
+                    if(pass1!=pass2 && pass1!="" && pass2!="")
+                        document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+                    else
+                        document.getElementById("password2").setCustomValidity('');
+                    //empty string means no validation error
+                    }
+          
+                    function clearForm(){
+                        document.getElementsByTagName("checkbox").value = "";
+                        document.getElementsByTagName("password").value = "";
+                        document.getElementsByTagName("radio").value = "";
+                        document.getElementById("somebodyinfo").value = "";
+                        document.getElementById("somebodyname").value = "";
+                        document.getElementById("somebodymail").value = "";
+                    }
+                </script>
+
             </div>
         </div><!-- conteiner__introMenu -->
     </div>

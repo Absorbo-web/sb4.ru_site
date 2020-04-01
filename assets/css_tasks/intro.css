@@ -161,9 +161,14 @@ a:hover{
     color: #fff;
 }
 
-.anketa__conteiner input[type = "text"], [type = "password"], textarea{
+.anketa__conteiner input[type = "text"], [type = "email"], [type = "password"], textarea{
     width: 100%;
     background-color: rgba(226, 226, 226, 0.301);
+}
+
+input:-internal-autofill-selected {
+    background-color: rgba(226, 226, 226, 0.301);
+    color: #fff;
 }
 
 .anketa__conteiner input[type = "submit"], [type = "reset"]{
