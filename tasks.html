@@ -17,7 +17,7 @@
                 <div class="title">Добро пожаловать на страницу</div>
                 <div class="subtitle">Здесь будут располагаться решения разных заданий по Web-программированию с курса "Программирование в комьютерных сетях"</div>
             </div>
-            <div class="conteiner__menu">
+            <div style="position: fixed;" class="conteiner__menu">
                 <div class="wrapper">
                     <input type="checkbox" id="check-menu">
                     <label for="check-menu"></label>
@@ -32,9 +32,9 @@
                             <label for="check-anketa"></label>
                         </div>
                         <a href="#z1">Календарь</a>
-                        <a href="#clock">Пункт 3</a>
-                        <a href="#">Пункт 4</a>
-                        <a href="#">Пункт 5</a>
+                        <a href="#clock">Часы</a>
+                        <a href="#randomColor">randomColor</a>
+                        <a href="#hoverColor">hoverColor</a>
                     </nav>
                 </div>
             </div><!-- conteiner__menu -->
@@ -131,7 +131,7 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-    <div class="container">
+    <div id="randomColor" class="container">
         <div class="Cart">
           <div class="Cart__items"></div>
           <div class="Cart__items"></div>
@@ -183,7 +183,7 @@
       <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
       <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
   
-      <div class="container">
+      <div id="hoverColor" class="container">
         <style>
           #img__box {
             display: flex;
@@ -267,6 +267,10 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js'></script>
     <!-- Скрипт для часов -->
     <script src="assets/js_tasks/clock.js"></script>
+    <!-- Скрипт для скрола -->
+	<!--Подключаем jQuery-->
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="assets/js_tasks/scroll.js"></script>
 
 
     
